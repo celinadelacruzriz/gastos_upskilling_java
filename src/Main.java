@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/*
 public class Main {
 
     public static void main(String[] args) throws GastoException {
@@ -127,6 +127,104 @@ public class Main {
         }while (opcion !=0);
 
         //Mensaje fin programa y cierre de Scanner
+        System.out.println("Fin del programa.");
+        System.out.println("Gracias por utilizar la app!");
+        lector.close();
+    }
+}
+*/
+/* VERSION REFACTORIZADA DEL MAIN */
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner lector = new Scanner(System.in);
+
+        // Recopilación de datos del usuario
+        System.out.println("Introduce el nombre de usuario");
+        String nombreUsuario = lector.nextLine();
+        System.out.println("Introduce la edad del usuario");
+        int edadUsuario = lector.nextInt();
+        lector.nextLine();
+        System.out.println("Introduce el DNI del usuario");
+        String DNIUsuario = lector.nextLine();
+
+        Usuario usuario = new Usuario(nombreUsuario, edadUsuario, DNIUsuario);
+
+        // Loop principal
+        int opcion;
+        double saldoCuenta = 0.0;
+        ArrayList<Gasto> gastos = new ArrayList<>();
+        ArrayList<Ingreso> ingresos = new ArrayList<>();
+
+        do {
+            // Menú
+            System.out.println("SELECCIONA DEL MENÚ");
+            System.out.println("1 Introduce un nuevo gasto");
+            System.out.println("2 Introduce un nuevo ingreso");
+            System.out.println("3 Mostrar gastos");
+            System.out.println("4 Mostrar ingresos");
+            System.out.println("5 Mostrar saldo");
+            System.out.println("0 Salir");
+            System.out.println();
+            opcion = lector.nextInt();
+            lector.nextLine();
+
+            switch (opcion) {
+                case 1:
+                    // Introducir un nuevo gasto
+                    System.out.println("Introduce la descripción");
+                    String descGasto = lector.nextLine();
+                    System.out.println("Introduce la cantidad");
+                    double cantGasto = lector.nextDouble();
+                    lector.nextLine();
+
+                    try {
+                        if (cantGasto > saldoCuenta) {
+                            throw new GastoException();
+                        }
+
+                        Gasto gasto = new Gasto(cantGasto, descGasto);
+                        gastos.add(gasto);
+                        saldoCuenta -= cantGasto;
+                        System.out.println("Saldo restante: " + saldoCuenta + " $ARS");
+                    } catch (GastoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 2:
+                    // Introducir un nuevo ingreso
+                    System.out.println("Introduce la descripción");
+                    String descIngreso = lector.nextLine();
+                    System.out.println("Introduce la cantidad");
+                    double cantIngreso = lector.nextDouble();
+                    lector.nextLine();
+
+                    Ingreso ingreso = new Ingreso(cantIngreso, descIngreso);
+                    ingresos.add(ingreso);
+                    saldoCuenta += cantIngreso;
+                    System.out.println("Saldo restante: " + saldoCuenta + " $ARS");
+                    break;
+                case 3:
+                    // Mostrar gastos
+                    for (Gasto g : gastos) {
+                        System.out.println(g);
+                    }
+                    break;
+                case 4:
+                    // Mostrar ingresos
+                    for (Ingreso i : ingresos) {
+                        System.out.println(i);
+                    }
+                    break;
+                case 5:
+                    // Mostrar saldo
+                    System.out.println("Saldo actual: " + saldoCuenta + " $ARS");
+                    break;
+            }
+        } while (opcion != 0);
+
         System.out.println("Fin del programa.");
         System.out.println("Gracias por utilizar la app!");
         lector.close();

@@ -1,5 +1,5 @@
 public class Gasto extends Dinero{
-    private static int counter = 0; // Inicializa el contador en 1
+    private static int counter = 1; // Inicializa el contador en 1
 
     public Gasto(double gasto, String descripcion){
         this.dinero=gasto;
